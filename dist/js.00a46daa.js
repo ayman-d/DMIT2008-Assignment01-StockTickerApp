@@ -161,10 +161,22 @@ var _singleStockData = _interopRequireDefault(require("./util/single-stock-data"
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.addEventListener("load", function (e) {
-  var request = (0, _singleStockData.default)("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=JGZ55RLK2EQWLJLP");
-  request.then(function (results) {
-    console.log(results);
-  });
+  var form = document.forms["main-form"];
+  var searchParam;
+  var request;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    searchParam = e.currentTarget.ticker.value;
+    request = (0, _singleStockData.default)("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=".concat(searchParam, "&apikey=JGZ55RLK2EQWLJLP"));
+    request.then(function (results) {
+      console.log(results["Global Quote"]);
+    });
+  }); // const request = httpGetRequest(
+  //   `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${searchParam}&apikey=JGZ55RLK2EQWLJLP`
+  // );
+  // request.then((results) => {
+  //   console.log(results["Global Quote"]);
+  // });
 });
 },{"./util/single-stock-data":"js/util/single-stock-data.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -194,7 +206,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63875" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55454" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
