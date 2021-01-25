@@ -117,79 +117,56 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"js/util/single-stock-data.js":[function(require,module,exports) {
+"use strict";
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
-  return bundleURL;
+/* 
+    @method GET httpRequest
+    @param: URL of the data api
+    @description
+*/
+// const headers = new Headers();
+// headers.append("function", "GLOBAL_QUOTE");
+// headers.append("symbol", "IBM");
+// headers.append("apikey", "JGZ55RLK2EQWLJLP");
+function httpGetRequest(url) {
+  //   const requestObject = {
+  //     method: "GET",
+  //     headers: headers,
+  //     redirect: "follow",
+  //   };
+  // get data and convert it to json format
+  // const request = fetch(url, requestObject)
+  var request = fetch(url).then(function (res) {
+    return res.json();
+  }).then(function (result) {
+    return result;
+  }); // return the data to the caller
+
+  return request;
 }
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+var _default = httpGetRequest;
+exports.default = _default;
+},{}],"js/index.js":[function(require,module,exports) {
+"use strict";
 
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
+var _singleStockData = _interopRequireDefault(require("./util/single-stock-data"));
 
-  return '/';
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel/src/builtins/bundle-url.js"}],"css/styles.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel/src/builtins/css-loader.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+window.addEventListener("load", function (e) {
+  var request = (0, _singleStockData.default)("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=JGZ55RLK2EQWLJLP");
+  request.then(function (results) {
+    console.log(results);
+  });
+});
+},{"./util/single-stock-data":"js/util/single-stock-data.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +370,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/styles.b61e60ae.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","js/index.js"], null)
+//# sourceMappingURL=/js.00a46daa.js.map
