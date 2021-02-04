@@ -11,7 +11,13 @@
   "author": "ayman al-dali",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
     "http-server": "^0.12.3",
     "parcel": "^1.12.4"
+  },
+  "dependencies": {
+    "ejs": "^3.1.5"
   }
 }
