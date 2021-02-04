@@ -132,10 +132,15 @@ function TickerController(model, view) {
   this.view = view;
 
   this.configUI = function () {
-    var form = document.forms["main-form"];
-    form.addEventListener("submit", this.onHandleSubmit);
+    // grab the form element
+    var form = document.forms["main-form"]; // add event listener for form submit
+
+    form.addEventListener("submit", this.onHandleSubmit); // re-focus on the input field
+
     form.ticker.focus();
-  };
+  }; // submit function will take the current user input and request the object from the model
+  // when object is returned, the object will be sent to the view to be rendered
+
 
   this.onHandleSubmit = function (e) {
     e.preventDefault();
@@ -960,6 +965,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function TickerModel() {
+  // define the base url, the function, apikey parameters
   this.baseURL = "https://www.alphavantage.co/query";
   this.functionParam = "GLOBAL_QUOTE";
   this.apikey = "JGZ55RLK2EQWLJLP";
@@ -971,12 +977,14 @@ function TickerModel() {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              url = new URL(this.baseURL + "?");
+              url = new URL(this.baseURL + "?"); // add required parameters to the URL variable
+
               params = new URLSearchParams();
               params.set("function", this.functionParam);
               params.set("symbol", tickerSymbol);
               params.set("apikey", this.apikey);
-              url = url + params;
+              url = url + params; // fetch the data from API asynchronously
+
               _context.next = 8;
               return fetch(url);
 
@@ -2736,17 +2744,22 @@ var _ejs = _interopRequireDefault(require("ejs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var resultsView = "\n    <aside class=\"info-aside\">\n        <h2>Stock Ticker Info</h2>\n        <span class=\"symbol\"> <%=ticker[\"01. symbol\"]%> </span>  \n        <span class=\"currency\"> USD </span><span class=\"money\"> <%=price%>  </span>  \n        <span class=\"smalltext\"> closed on </span> <span class=\"date\"> <%=ticker[\"07. latest trading day\"]%></span>\n        </br>\n        <span class=\"smalltext\">last close </span> <span class=\"currency\"> USD </span> <span> <%=lastPrice%> </span>\n        </br>\n        <i class=\"fas fa-arrow-<%=arrow%> <%=color%>\"></i>\n        <span class=\"change <%=color%>\"> <%=sign%><%=ticker[\"09. change\"]%> </span>\n        <span class=\"change <%=color%>\"\"> <%=sign%><%=ticker[\"10. change percent\"] %> </span>\n    </aside>\n";
-var noResultsView = "\n    <aside class=\"error-aside\">\n        <h2>! No Data Found</h2>\n        <p>no results found for the provided ticker symbol</p>\n    </aside>\n";
+// template to be used for successful data retrieval
+var resultsView = "\n    <aside class=\"info-aside\">\n        <h2>Stock Ticker Info</h2>\n        <span class=\"symbol\"> <%=ticker[\"01. symbol\"]%> </span>  \n        <span class=\"currency\"> USD </span><span class=\"money\"> <%=price%>  </span>  \n        <span class=\"smalltext\"> closed on </span> <span class=\"date\"> <%=ticker[\"07. latest trading day\"]%></span>\n        </br>\n        <span class=\"smalltext\">last close </span> <span class=\"currency\"> USD </span> <span> <%=lastPrice%> </span>\n        </br>\n        <i class=\"fas fa-arrow-<%=arrow%> <%=color%>\"></i>\n        <span class=\"change <%=color%>\"> <%=sign%><%=ticker[\"09. change\"]%> </span>\n        <span class=\"change <%=color%>\"\"> <%=sign%><%=ticker[\"10. change percent\"] %> </span>\n    </aside>\n"; // template to use when no results are returned based on user input
+
+var noResultsView = "\n    <aside class=\"error-aside\">\n        <h2>! No Data Found</h2>\n        <p>no results found for the provided ticker symbol</p>\n    </aside>\n"; // template to use when no input is provided from the user
+
 var noInputView = "\n    <aside class=\"error-aside\">\n        <h2>! Missing Input</h2>\n        <p>Please enter a value in the search box</p>\n    </aside>\n";
 
 function ResultsView() {
-  this.container = document.querySelector(".info-area");
+  // the main container of the results view
+  this.container = document.querySelector(".info-area"); // function that takes in the returned object from the API and renders it to the DOM
 
   this.renderView = function (obj) {
     var _this = this;
 
     var tickerElement = obj.then(function (ticker) {
+      // display no-input error if object is null or undefined
       if (ticker === null || ticker === undefined) {
         _this.clearPage();
 
@@ -2754,9 +2767,10 @@ function ResultsView() {
 
         _this.container.insertAdjacentHTML("afterbegin", elem);
       } else {
+        // check if no objects returned based on user input
         Object.keys(ticker).length === 0 ? _this.showNoResult() : _this.showResult(ticker);
       }
-    });
+    }); // show successful result template
 
     this.showResult = function (ticker) {
       this.clearPage();
@@ -2777,7 +2791,8 @@ function ResultsView() {
       });
 
       this.container.insertAdjacentHTML("afterbegin", elem);
-    };
+    }; // show no result template
+
 
     this.showNoResult = function () {
       this.clearPage();
@@ -2785,7 +2800,8 @@ function ResultsView() {
       var elem = _ejs.default.render(noResultsView);
 
       this.container.insertAdjacentHTML("afterbegin", elem);
-    };
+    }; // method to clear page, used before any new request is made
+
 
     this.clearPage = function () {
       var _this2 = this;
@@ -2815,7 +2831,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.addEventListener("load", function (e) {
   var model = new _ticker.default();
   var view = new _resultsView.default();
-  var controller = new _tickerController.default(model, view);
+  var controller = new _tickerController.default(model, view); // run the controller configUI function to listen for user submission
+
   controller.configUI();
 });
 },{"./controllers/ticker-controller":"js/controllers/ticker-controller.js","./models/ticker":"js/models/ticker.js","./views/results-view":"js/views/results-view.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -2846,7 +2863,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52220" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63710" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,5 +1,6 @@
 import ejs from "ejs";
 
+// template to be used for successful data retrieval
 const resultsView = `
     <aside class="info-aside">
         <h2>Stock Ticker Info</h2>
@@ -15,6 +16,7 @@ const resultsView = `
     </aside>
 `;
 
+// template to use when no results are returned based on user input
 const noResultsView = `
     <aside class="error-aside">
         <h2>! No Data Found</h2>
@@ -22,6 +24,7 @@ const noResultsView = `
     </aside>
 `;
 
+// template to use when no input is provided from the user
 const noInputView = `
     <aside class="error-aside">
         <h2>! Missing Input</h2>
@@ -30,21 +33,26 @@ const noInputView = `
 `;
 
 function ResultsView() {
+  // the main container of the results view
   this.container = document.querySelector(".info-area");
 
+  // function that takes in the returned object from the API and renders it to the DOM
   this.renderView = function (obj) {
     const tickerElement = obj.then((ticker) => {
+      // display no-input error if object is null or undefined
       if (ticker === null || ticker === undefined) {
         this.clearPage();
         const elem = ejs.render(noInputView);
         this.container.insertAdjacentHTML("afterbegin", elem);
       } else {
+        // check if no objects returned based on user input
         Object.keys(ticker).length === 0
           ? this.showNoResult()
           : this.showResult(ticker);
       }
     });
 
+    // show successful result template
     this.showResult = function (ticker) {
       this.clearPage();
       let color, sign, arrow, price, lastPrice;
@@ -65,12 +73,14 @@ function ResultsView() {
       this.container.insertAdjacentHTML("afterbegin", elem);
     };
 
+    // show no result template
     this.showNoResult = function () {
       this.clearPage();
       const elem = ejs.render(noResultsView);
       this.container.insertAdjacentHTML("afterbegin", elem);
     };
 
+    // method to clear page, used before any new request is made
     this.clearPage = function () {
       this.container.querySelectorAll("aside").forEach((ticker) => {
         this.container.removeChild(ticker);
