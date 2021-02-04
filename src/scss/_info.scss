@@ -1,8 +1,46 @@
 .info-aside {
-  border: 1px solid #333;
   border-radius: 5px;
-  padding: 1rem 1rem 1rem 200px;
-  margin-top: 2rem;
+  padding: 1rem;
+  text-align: center;
+  margin: 2rem auto;
   max-width: 400px;
   margin: 2rem auto;
+  font-size: 18px;
+
+  .symbol {
+    color: rgb(44, 142, 199);
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .currency {
+    color: grey;
+  }
+
+  .money {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .smalltext {
+    font-size: 14px;
+  }
+
+  .date {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .change {
+    margin: 0 6px;
+    font-weight: bold;
+  }
+
+  .green {
+    color: green;
+  }
+
+  .red {
+    color: red;
+  }
 }

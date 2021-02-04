@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  background-color: #dbdbda;
+  background-color: #eeeeec;
 }
 
 body header {
@@ -9,7 +9,7 @@ body header {
   text-align: center;
   font-size: 2rem;
   background-color: #1f1e1e;
-  color: #ad5927;
+  color: #3de2cc;
   padding-bottom: 1rem;
   margin-bottom: 2rem;
 }
@@ -75,6 +75,77 @@ body .container {
 }
 
 .info-aside {
+  border-radius: 5px;
+  padding: 1rem;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 400px;
+  margin: 2rem auto;
+  font-size: 18px;
+}
+
+.info-aside .symbol {
+  color: #2c8ec7;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.info-aside .currency {
+  color: grey;
+}
+
+.info-aside .money {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.info-aside .smalltext {
+  font-size: 14px;
+}
+
+.info-aside .date {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.info-aside .change {
+  margin: 0 6px;
+  font-weight: bold;
+}
+
+.info-aside .green {
+  color: green;
+}
+
+.info-aside .red {
+  color: red;
+}
+
+.error-aside {
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin-top: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.error-aside h2 {
+  background-color: #a12424;
+  margin: 0;
+  padding: 0.3rem;
+  color: #e6d9cf;
+}
+
+.error-aside p {
+  font-weight: bold;
+  background-color: #e9a4a4;
+  margin: 0;
+  color: #333;
+  padding: 1rem;
+}
+
+.no-result-aside {
   border: 1px solid #333;
   border-radius: 5px;
   padding: 1rem 1rem 1rem 200px;

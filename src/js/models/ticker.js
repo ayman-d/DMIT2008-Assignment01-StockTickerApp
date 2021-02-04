@@ -15,7 +15,7 @@ function TickerModel() {
 
     const req = await fetch(url);
     const res = await req.json();
-    console.log(res["Global Quote"]);
+    // console.log(res["Global Quote"]);
     return res["Global Quote"];
   };
 

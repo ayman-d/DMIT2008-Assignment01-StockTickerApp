@@ -117,7 +117,43 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
+})({"js/controllers/ticker-controller.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function TickerController(model, view) {
+  var _this = this;
+
+  this.model = model;
+  this.view = view;
+
+  this.configUI = function () {
+    var form = document.forms["main-form"];
+    form.addEventListener("submit", this.onHandleSubmit);
+    form.ticker.focus();
+  };
+
+  this.onHandleSubmit = function (e) {
+    e.preventDefault();
+    var tickerSymbol = e.currentTarget.ticker.value;
+
+    var model = _this.model.search(tickerSymbol);
+
+    _this.view.renderView(model);
+
+    e.currentTarget.ticker.focus();
+  };
+
+  return this;
+}
+
+var _default = TickerController;
+exports.default = _default;
+},{}],"../node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
 var define;
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -951,10 +987,9 @@ function TickerModel() {
 
             case 11:
               res = _context.sent;
-              console.log(res["Global Quote"]);
               return _context.abrupt("return", res["Global Quote"]);
 
-            case 14:
+            case 13:
             case "end":
               return _context.stop();
           }
@@ -972,43 +1007,7 @@ function TickerModel() {
 
 var _default = TickerModel;
 exports.default = _default;
-},{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js"}],"js/util/single-stock-data.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/* 
-    @method GET httpRequest
-    @param: URL of the data api
-    @description
-*/
-// const headers = new Headers();
-// headers.append("function", "GLOBAL_QUOTE");
-// headers.append("symbol", "IBM");
-// headers.append("apikey", "JGZ55RLK2EQWLJLP");
-function httpGetRequest(url) {
-  //   const requestObject = {
-  //     method: "GET",
-  //     headers: headers,
-  //     redirect: "follow",
-  //   };
-  // get data and convert it to json format
-  // const request = fetch(url, requestObject)
-  var request = fetch(url).then(function (res) {
-    return res.json();
-  }).then(function (result) {
-    return result;
-  }); // return the data to the caller
-
-  return request;
-}
-
-var _default = httpGetRequest;
-exports.default = _default;
-},{}],"../node_modules/parcel/src/builtins/_empty.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js"}],"../node_modules/parcel/src/builtins/_empty.js":[function(require,module,exports) {
 
 },{}],"../node_modules/process/browser.js":[function(require,module,exports) {
 
@@ -2737,8 +2736,9 @@ var _ejs = _interopRequireDefault(require("ejs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var resultsView = "\n    <aside class=\"info-aside\">\n        <h2>Stock Ticker Info</h2>\n        <p>Symbol: <%=ticker[\"01. symbol\"] %></p>\n        <p>Closing Price: $<%=ticker[\"05. price\"]%></p>\n        <p>Previous Closing: $<%=ticker[\"08. previous close\"]%></p>\n        <p>Current Date (GMT): <%=ticker[\"07. latest trading day\"]%></p>\n        <p>Change: <%=ticker[\"09. change\"]%></p>\n        <p>Change percent(%): <%=ticker[\"10. change percent\"]%></p>\n    </aside>\n";
-var noResultsView = "\n    <aside class=\"info-aside\">\n        <h2>Stock Ticker Info</h2>\n        <p>no results found for the provided ticker symbol</p>\n    </aside>\n";
+var resultsView = "\n    <aside class=\"info-aside\">\n        <h2>Stock Ticker Info</h2>\n        <span class=\"symbol\"> <%=ticker[\"01. symbol\"]%> </span>  \n        <span class=\"currency\"> USD </span><span class=\"money\"> <%=price%>  </span>  \n        <span class=\"smalltext\"> closed on </span> <span class=\"date\"> <%=ticker[\"07. latest trading day\"]%></span>\n        </br>\n        <span class=\"smalltext\">last close </span> <span class=\"currency\"> USD </span> <span> <%=lastPrice%> </span>\n        </br>\n        <i class=\"fas fa-arrow-<%=arrow%> <%=color%>\"></i>\n        <span class=\"change <%=color%>\"> <%=sign%><%=ticker[\"09. change\"]%> </span>\n        <span class=\"change <%=color%>\"\"> <%=sign%><%=ticker[\"10. change percent\"] %> </span>\n    </aside>\n";
+var noResultsView = "\n    <aside class=\"error-aside\">\n        <h2>! No Data Found</h2>\n        <p>no results found for the provided ticker symbol</p>\n    </aside>\n";
+var noInputView = "\n    <aside class=\"error-aside\">\n        <h2>! Missing Input</h2>\n        <p>Please enter a value in the search box</p>\n    </aside>\n";
 
 function ResultsView() {
   this.container = document.querySelector(".info-area");
@@ -2747,18 +2747,53 @@ function ResultsView() {
     var _this = this;
 
     var tickerElement = obj.then(function (ticker) {
-      if (Object.keys(ticker).length === 0) {
-        var elem = _ejs.default.render(noResultsView);
+      if (ticker === null || ticker === undefined) {
+        _this.clearPage();
+
+        var elem = _ejs.default.render(noInputView);
 
         _this.container.insertAdjacentHTML("afterbegin", elem);
       } else {
-        var _elem = _ejs.default.render(resultsView, {
-          ticker: ticker
-        });
-
-        _this.container.insertAdjacentHTML("afterbegin", _elem);
+        Object.keys(ticker).length === 0 ? _this.showNoResult() : _this.showResult(ticker);
       }
     });
+
+    this.showResult = function (ticker) {
+      this.clearPage();
+      var color, sign, arrow, price, lastPrice;
+      ticker["09. change"] >= 0 ? color = "green" : color = "red";
+      ticker["09. change"] >= 0 ? sign = "+" : sign = "";
+      ticker["09. change"] >= 0 ? arrow = "up" : arrow = "down";
+      price = parseFloat(ticker["05. price"]).toFixed(2);
+      lastPrice = parseFloat(ticker["08. previous close"]).toFixed(2);
+
+      var elem = _ejs.default.render(resultsView, {
+        ticker: ticker,
+        color: color,
+        sign: sign,
+        arrow: arrow,
+        price: price,
+        lastPrice: lastPrice
+      });
+
+      this.container.insertAdjacentHTML("afterbegin", elem);
+    };
+
+    this.showNoResult = function () {
+      this.clearPage();
+
+      var elem = _ejs.default.render(noResultsView);
+
+      this.container.insertAdjacentHTML("afterbegin", elem);
+    };
+
+    this.clearPage = function () {
+      var _this2 = this;
+
+      this.container.querySelectorAll("aside").forEach(function (ticker) {
+        _this2.container.removeChild(ticker);
+      });
+    };
   };
 
   return this;
@@ -2769,39 +2804,21 @@ exports.default = _default;
 },{"ejs":"../node_modules/ejs/lib/ejs.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
-var _ticker = _interopRequireDefault(require("./models/ticker"));
+var _tickerController = _interopRequireDefault(require("./controllers/ticker-controller"));
 
-var _singleStockData = _interopRequireDefault(require("./util/single-stock-data"));
+var _ticker = _interopRequireDefault(require("./models/ticker"));
 
 var _resultsView = _interopRequireDefault(require("./views/results-view"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.addEventListener("load", function (e) {
-  // const form = document.forms["main-form"];
-  // let searchParam;
-  // let request;
-  // form.addEventListener("submit", function (e) {
-  //   e.preventDefault();
-  //   searchParam = e.currentTarget.ticker.value;
-  //   request = httpGetRequest(
-  //     `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${searchParam}&apikey=JGZ55RLK2EQWLJLP`
-  //   );
-  //   request.then((results) => {
-  //     console.log(results["Global Quote"]);
-  //   });
-  // });
   var model = new _ticker.default();
-  var ticker = model.search("bb");
   var view = new _resultsView.default();
-  view.renderView(ticker); // const request = httpGetRequest(
-  //   `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${searchParam}&apikey=JGZ55RLK2EQWLJLP`
-  // );
-  // request.then((results) => {
-  //   console.log(results["Global Quote"]);
-  // });
+  var controller = new _tickerController.default(model, view);
+  controller.configUI();
 });
-},{"./models/ticker":"js/models/ticker.js","./util/single-stock-data":"js/util/single-stock-data.js","./views/results-view":"js/views/results-view.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./controllers/ticker-controller":"js/controllers/ticker-controller.js","./models/ticker":"js/models/ticker.js","./views/results-view":"js/views/results-view.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2829,7 +2846,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64853" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52220" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
