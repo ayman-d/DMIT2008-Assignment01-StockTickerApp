@@ -1,7 +1,5 @@
 # Stock Ticker App
 
-asd
-
 ---
 
 ### Overview
@@ -65,7 +63,7 @@ If you use it on VS Code, make sure to turn on "watch sass" option when editing 
 
 ---
 
-### Contributers
+### Contributors
 
 - [Ayman Al-Dali](https://github.com/ayman-d) :octocat:
 
