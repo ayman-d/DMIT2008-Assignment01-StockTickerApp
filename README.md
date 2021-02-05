@@ -1,8 +1,10 @@
 # Stock Ticker App
 
-[Overview](#Overview)
-
-[Contributors](#contributors)
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [How to run](#running-the-project)
+- [Dependancies](#dependancies)
+- [Contributors](#contributors)
 
 ---
 
@@ -31,7 +33,7 @@ For a list of all stock ticker symbols please visit this link:
 
 ---
 
-### Overview
+### Purpose
 
 Looking up stock information can be overwhelming and confusing in many of the current high 
 traffic websites, this app aims to provide an easy way to quickly lookup a specific stock 
