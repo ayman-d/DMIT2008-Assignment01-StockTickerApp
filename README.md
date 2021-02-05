@@ -2,7 +2,7 @@
 
 ---
 
-### Purpose
+### Overview
 
 This app as a tool to help users get the latest data about a specific stock in the market.
 The app requires a valid input of a stock ticker (symbol or company acronym) and will return the 
@@ -21,4 +21,17 @@ The data sent back to the user will include the following pieces of information:
 
 <img src="https://puu.sh/HdOPv/bb50615975.png" alt="response" />
 
+For a list of all stock ticker symbols please visit this link:
+
+[Stock Ticker List](https://stockanalysis.com/stocks/)
+
 ---
+
+### Overview
+
+Looking up stock information can be overwhelming and confusing in many of the current high 
+traffic websites, this app aims to provide an easy way to quickly lookup a specific stock 
+and see how it's doing in the market.
+
+---
+
