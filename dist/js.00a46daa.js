@@ -2834,6 +2834,10 @@ window.addEventListener("load", function (e) {
   var controller = new _tickerController.default(model, view); // run the controller configUI function to listen for user submission
 
   controller.configUI();
+
+  var jojo = function jojo() {
+    console.log("hi");
+  };
 });
 },{"./controllers/ticker-controller":"js/controllers/ticker-controller.js","./models/ticker":"js/models/ticker.js","./views/results-view":"js/views/results-view.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -2863,7 +2867,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63710" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51961" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
