@@ -1,5 +1,9 @@
 # Stock Ticker App
 
+[Overview](#Overview)
+
+[Contributors](#contributors)
+
 ---
 
 ### Overview
