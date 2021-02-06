@@ -17,7 +17,8 @@ function TickerController(model, view) {
   // when object is returned, the object will be sent to the view to be rendered
   this.onHandleSubmit = (e) => {
     e.preventDefault();
-    const tickerSymbol = e.currentTarget.ticker.value;
+    // take user input and remove white space
+    const tickerSymbol = e.currentTarget.ticker.value.trim();
 
     const model = this.model.search(tickerSymbol);
     this.view.renderView(model);
